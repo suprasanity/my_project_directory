@@ -94,9 +94,9 @@ class RefPokemonTypeController extends AbstractController
         return $this->redirectToRoute('app_ref_pokemon_type_index', [], Response::HTTP_SEE_OTHER);
     }
     /**
-     * @Route("/starter", name="starter", methods={"GET"})
+     * @Route("/registration/success2", name="registration_success2")
      */
-    public function choseStarter(EntityManagerInterface $entityManager): Response
+    public function success(EntityManagerInterface $entityManager): Response
     {
         $refPokemonTypes = $entityManager
             ->getRepository(RefPokemonType::class)

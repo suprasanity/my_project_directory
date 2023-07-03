@@ -16,11 +16,12 @@ class HomeController extends AbstractController
     {
         $Trainer = $this->getUser();
         if ($Trainer->isFirstLogged()) {
-            return $this->redirectToRoute('starter'); // Replace "other_route" with the name of your desired route
+            return $this->redirectToRoute('registration_success2'); // Replace "other_route" with the name of your desired route
         }
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
+            'first' => $Trainer->isFirstLogged()
         ]);
     }
 }

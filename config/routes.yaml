@@ -17,6 +17,6 @@ Home:
     path: /home
     controller: App\Controller\HomeController::index
 
-ChoseStarter :
-    path: /starter
-    controller: App\Controller\RefPokemonTypeController::choseStarter
+first_sucess:
+  path: /registration/success2
+  controller: App\Controller\RefPokemonType::success
