@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choose Starter{% endblock %}
+
+{% block body %}
+    <h1>Select Pokemon</h1>
+
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.pokemon, 'Select a Pokemon') }}
+        {{ form_widget(form.pokemon, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.pokemon) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Capture</button>
+    {{ form_end(form) }}
+{% endblock %}

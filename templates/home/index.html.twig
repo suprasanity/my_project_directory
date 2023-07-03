@@ -1,0 +1,21 @@
+{# templates/home/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-5">Welcome to the Pokémon Universe!</h1>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

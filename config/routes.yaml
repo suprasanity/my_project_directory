@@ -1,3 +1,22 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\HomeController::index
+trainer_registration:
+  path: /register
+  controller: App\Controller\RegistrationController::register
+
+registration_success:
+  path: /registration/success
+  controller: App\Controller\RegistrationController::success
+
+login:
+    path: /login
+    controller: App\Controller\LoginController::login
+
+Home:
+    path: /home
+    controller: App\Controller\HomeController::index
+
+ChoseStarter :
+    path: /starter
+    controller: App\Controller\RefPokemonTypeController::choseStarter

@@ -1,0 +1,12 @@
+{# templates/registration/success.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration Success{% endblock %}
+
+{% block body %}
+    <h1>Registration Successful</h1>
+    <p>Congratulations! Your registration was successful.</p>
+    <p>You can now login to your trainer account and start playing the Pokémon game.</p>
+    <p><a href="{{ path('login') }}">Login</a></p>
+{% endblock %}
