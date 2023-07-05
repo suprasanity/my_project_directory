@@ -2,25 +2,35 @@
 
 namespace App\Form;
 
-use App\Repository\PokemonRepository;
+use App\Entity\RefPokemonType;
+use App\Repository\RefPokemonTypeRepository;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Test\FormBuilderInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class PokemonType extends AbstractType
 {
-    private PokemonRepository $pokemonRepository;
+    private RefPokemonTypeRepository $pokemonRepository;
 
-    public function __construct(PokemonRepository $pokemonRepository)
+    public function __construct(RefPokemonTypeRepository $pokemonRepository)
     {
         $this->pokemonRepository = $pokemonRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('pokemon', ChoiceType::class, [
-                'choices' => $this->pokemonRepository->findAll(),
-                'choice_label' => 'name',
-            ]);
+        $Pokemons = $this->pokemonRepository->findAll();
+        //add $Pokemons object to the form
+        $builder->add('pokemon', ChoiceType::class, [
+            'choices' => $Pokemons,
+            'choice_label' => function(?RefPokemonType $pokemon) {
+                return $pokemon ? $pokemon->getName() : '';
+            },
+            'choice_value' => function(?RefPokemonType $pokemon) {
+                return $pokemon ? $pokemon->getId() : '';
+            },
+            'placeholder' => 'Choose a Pokemon',
+            'required' => true,
+        ]);
     }
 }

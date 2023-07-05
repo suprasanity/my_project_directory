@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RefPokemonType;
+use App\Form\PokemonType;
 use App\Form\RefPokemonTypeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,16 +95,18 @@ class RefPokemonTypeController extends AbstractController
         return $this->redirectToRoute('app_ref_pokemon_type_index', [], Response::HTTP_SEE_OTHER);
     }
     /**
-     * @Route("/registration/success2", name="registration_success2")
+     * @Route("/registration/first_login", name="first_login")
      */
-    public function success(EntityManagerInterface $entityManager): Response
+    public function success(Request $request,EntityManagerInterface $entityManager): Response
     {
-        $refPokemonTypes = $entityManager
-            ->getRepository(RefPokemonType::class)
-            ->findAll();
+        $form = $this->createForm(PokemonType::class);
+
+        // Handle the form submission
+        $form->handleRequest($request);
+
 
         return $this->render('ref_pokemon_type/chooseStarter.html.twig', [
-            'ref_pokemon_types' => $refPokemonTypes,
+            'form' => $form->createView(),
         ]);
     }
 }

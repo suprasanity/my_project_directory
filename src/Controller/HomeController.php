@@ -15,8 +15,13 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         $Trainer = $this->getUser();
-        if ($Trainer->isFirstLogged()) {
-            return $this->redirectToRoute('registration_success2'); // Replace "other_route" with the name of your desired route
+
+        if ($Trainer == null) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ( $Trainer->isFirstLogged()) {
+            return $this->redirectToRoute('first_login');
         }
 
         return $this->render('home/index.html.twig', [

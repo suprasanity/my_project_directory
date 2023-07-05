@@ -18,5 +18,5 @@ Home:
     controller: App\Controller\HomeController::index
 
 first_sucess:
-  path: /registration/success2
+  path: /registration/first_login
   controller: App\Controller\RefPokemonType::success
