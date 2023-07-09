@@ -71,9 +71,12 @@ class HomeController extends AbstractController
 
     public function buy(\Symfony\Component\HttpFoundation\Request $request): Response
     {
+        //non seulement on devrait utiliser des service mais cela devrait etre transactionnel pour le paiement
         $user = $this->getUser();
         $Trainer = $this->trainerRepository->findById($user->getId());
         $Pokemon = $this->pokemonRepository->findById($request->get('id'));
+        $PreviousTrainer = $Pokemon->getTrainer();
+        $PreviousTrainer->setPokedolls($PreviousTrainer->getPokedolls() + $Pokemon->getSellPrice());
         $Price = $Pokemon->getSellPrice();
         $Trainer->setPokedolls($Trainer->getPokedolls() - $Price);
         $Pokemon->setTrainer($Trainer);
@@ -87,7 +90,11 @@ class HomeController extends AbstractController
      * @Route("/sortir", name="sortir")
      * @IsGranted("ROLE_USER")
      */
-    public function sortir(): Response{
+    public function sortir(\Symfony\Component\HttpFoundation\Request $request): Response{
+        $Pokemon = $this->pokemonRepository->findById($request->get('id'));
+        $timezone = new \DateTimeZone('Europe/Paris');
+        $Pokemon->setLastTrained(new \DateTime('now', $timezone));
+        $this->pokemonRepository->persist($Pokemon);
         return $this ->render('home/sortir.html.twig');
     }
 
