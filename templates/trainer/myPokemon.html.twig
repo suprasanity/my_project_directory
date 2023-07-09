@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .disabled-button {
+            opacity: 0.5;
+            /* Add any other custom styles as needed */
+        }
+    </style>
 {% endblock %}
+
 {% block body %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Pokémon Universe</a>
+        <a class="navbar-brand" href="{{ path('app_home') }}">Pokémon Universe</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,12 +29,96 @@
             </ul>
         </div>
     </nav>
-    <h1>VOICI VOS POKEMON</h1>
-    <ul class="list-group">
-        {% for pokemon in trainersPokemon %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>{{ pokemon.name }}</strong>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container mt-4">
+        <h1>VOICI VOS POKEMON</h1>
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Type 1</th>
+                <th scope="col">Type 2</th>
+                <th scope="col">Level</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Last time trained</th>
+                <th scope="col">En vente</th>
+                <th scope="col">Train</th>
+                <th scope="col">Release</th>
+                <th scope="col">Sell</th>
+                <th scope="col">Sortir avec</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pokemon in trainersPokemon %}
+                <tr>
+                    <td>{{ pokemon.name }}</td>
+                    <td>{{ pokemon.type1.name }}</td>
+                    <td>{{ pokemon.type2.name }}</td>
+                    <td>{{ pokemon.niveau }}</td>
+                    <td>{{ pokemon.realxp }}</td>
+                    <td>{{ pokemon.lastTrained|date('d-m-Y-H-i-s') }}</td>
+                    <td>
+                        {% if pokemon.sellPrice != 0 %}
+                            <input type="checkbox" checked disabled>
+                        {% else %}
+                            <input type="checkbox" disabled>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% set lastTrainedTime = pokemon.lastTrained.format('U')|trim %}
+                        {% set oneHourAgo = "now"|date('U')|trim - 3600 %}
+                        {% if lastTrainedTime > oneHourAgo %}
+                            <button class="btn btn-primary disabled" disabled>Train</button>
+                        {% else %}
+                            <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                <input type="submit" value="Train" class="btn btn-primary">
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ path('release', {'id': pokemon.id}) }}">
+                            <input type="submit" value="Release" class="btn btn-danger">
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#sellModal{{ pokemon.id }}">Sell</button>
+                        <div class="modal fade" id="sellModal{{ pokemon.id }}" tabindex="-1" role="dialog" aria-labelledby="sellModalLabel{{ pokemon.id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="sellModalLabel{{ pokemon.id }}">Sell Pokémon</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" action="{{ path('sell', {'id': pokemon.id}) }}">
+                                            <div class="form-group">
+                                                <label for="price{{ pokemon.id }}">Price:</label>
+                                                <input type="number" class="form-control" id="price{{ pokemon.id }}" name="price" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Sell</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if lastTrainedTime > oneHourAgo %}
+                            <button class="btn btn-primary disabled" disabled>Sortir avec</button>
+                        {% else %}
+                            <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                <input type="submit" value="Sortir avec" class="btn btn-primary">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

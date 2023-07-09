@@ -24,6 +24,7 @@ class RefPokemonTypeRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.starter = true')
+            ->andWhere('p.trainer IS NULL')
             ->getQuery()
             ->getResult()
         ;
@@ -65,6 +66,12 @@ class RefPokemonTypeRepository extends ServiceEntityRepository
             ->setParameter('trainer', $Trainer)
             ->getQuery()
             ->getResult();
+    }
+
+    public function delete(RefPokemonType $pokemon)
+    {
+        $this->_em->remove($pokemon);
+        $this->_em->flush();
     }
 
 }

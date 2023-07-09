@@ -119,5 +119,57 @@ class TrainerController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/train/{id}", name="train", methods={"POST"})
+     */
+    public function train(Request $request): Response{
+        $id=$request->get('id');
+        $pokemon = $this->pokemonRepository->findById($id);
+        $pokemon->setLastTrained(new \DateTime());
+        //set realxp is random between 10 and 30
+        $pokemon->setRealxp(rand(10,30) + $pokemon->getRealxp());
+        if($pokemon->getXpCourbe()=="P"){
+            $xpToNextFloor = 1.2 * ($pokemon->getNiveau()^3) - 15 * ($pokemon->getNiveau()^2) + 100 * $pokemon->getNiveau() - 140;
+
+        }
+        if($pokemon->getXpCourbe()=="M"){
+            $xpToNextFloor = ($pokemon->getNiveau()^3);
+        }
+        if($pokemon->getXpCourbe()=="R"){
+            $xpToNextFloor = 0.8 * ($pokemon->getNiveau()^3);
+        }
+
+        if($pokemon->getRealxp()>=$xpToNextFloor){
+            $pokemon->setNiveau($pokemon->getNiveau()+1);
+            $pokemon->setRealxp($pokemon->getRealxp()-$xpToNextFloor);
+        }
+        $this->pokemonRepository->persist($pokemon);
+        return $this->redirectToRoute('myPokemon');
+
+    }
+    /**
+     * @Route("/release/{id}", name="release", methods={"POST"})
+     */
+    public function release(Request $request): Response
+    {
+        $pokemon = $this->pokemonRepository->findById($request->get('id'));
+        $this->pokemonRepository->delete($pokemon);
+        return $this->redirectToRoute('myPokemon');
+    }
+
+    /**
+     * @Route("/sell/{id}", name="sell", methods={"POST"})
+     */
+    public function sell(Request $request): Response
+    {
+        $pokemon = $this->pokemonRepository->findById($request->get('id'));
+        $price = $request->get('price');
+        $pokemon->setSellPrice($price);
+        $this->pokemonRepository->persist($pokemon);
+        return $this->redirectToRoute('myPokemon');
+    }
+
+
+
 
 }

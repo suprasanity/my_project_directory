@@ -33,3 +33,20 @@ add_pokemon:
 myPokemon:
   path: /myPokemon
   controller: App\Controller\TrainerController::myPokemon
+
+train:
+  path: /train
+  controller: App\Controller\TrainerController::train
+  methods: [POST]
+
+realease:
+  path: /release
+  controller: App\Controller\TrainerController::release
+  methods: [POST]
+
+sell:
+  path: /sell
+  controller: App\Controller\TrainerController::sell
+  methods: [POST]
+
+

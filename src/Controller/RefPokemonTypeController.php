@@ -136,15 +136,9 @@ class RefPokemonTypeController extends AbstractController
         $pokemonId = $request->request->get('pokemon_id');
 
         $pokemon = $this->pokemonRepository->findById($pokemonId);
+        $pokemonCopy = new RefPokemonType($pokemon);
+        $this->pokemonRepository->persist($pokemonCopy);
         $pokemon->setTrainer($Trainer);
-        $this->pokemonRepository->persist($pokemon);
-
-
-
-
-
-
-
-        return $this->redirectToRoute('app_home');
+        $this->pokemonRepository->persist($pokemon);        return $this->redirectToRoute('app_home');
     }
 }

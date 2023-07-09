@@ -76,6 +76,29 @@ class RefPokemonType
     private bool $starter;
 
     /**
+     * @return int
+     */
+    public function getSellPrice(): int
+    {
+        return $this->sellPrice;
+    }
+
+    /**
+     * @param int $sellPrice
+     */
+    public function setSellPrice(int $sellPrice): void
+    {
+        $this->sellPrice = $sellPrice;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="sellPrice", type="integer", nullable=true)
+     */
+    private int $sellPrice;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="xp", type="string", length=255, nullable=false)
@@ -121,28 +144,51 @@ class RefPokemonType
     private ?Trainer $trainer;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getImage(): string
+    public function getRealxp(): int
     {
-        return $this->image;
+        return $this->realxp;
     }
 
     /**
-     * @param string $image
+     * @param int $realxp
      */
-    public function setImage(string $image): void
+    public function setRealxp(int $realxp): void
     {
-        $this->image = $image;
+        $this->realxp = $realxp;
     }
 
+    /**
+     * @return int
+     */
+    public function getNiveau(): int
+    {
+        return $this->niveau;
+    }
 
     /**
-     * @var string
+     * @param int $niveau
+     */
+    public function setNiveau(int $niveau): void
+    {
+        $this->niveau = $niveau;
+    }
+
+    /**
+     * @var int
      *
-     * @ORM\Column(name="image", type="string", nullable=false)
+     * @ORM\Column(name="realxp", type="integer", nullable=false)
      */
-    private string $image;
+    private int $realxp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="niveau", type="integer", nullable=false)
+     */
+    private int $niveau;
+
 
     public function getId(): int
     {
@@ -203,4 +249,5 @@ class RefPokemonType
     {
         $this->id = $int;
     }
+
 }
