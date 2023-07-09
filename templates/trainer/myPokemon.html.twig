@@ -65,7 +65,7 @@
                         {% if pokemon.lastTrained is null %}
                             N/A
                         {% else %}
-                            {{ pokemon.lastTrained|date("Y-m-d H:i:s") }}
+                            {{ pokemon.lastTrained|date("Y-m-d H:m:s") }}
                         {% endif %}
                     </td>
                     <td>
@@ -81,10 +81,9 @@
                                 <input type="submit" value="Train" class="btn btn-primary">
                             </form>
                         {% else %}
-                              {% set currentTime = "now"|date("Y-m-d H:i:s") %}
-                                {% set lastTrainedTime = pokemon.lastTrained|date("Y-m-d H:i:s") %}
+                              {% set currentTime = "now"|date("Y-m-d H:m:s") %}
                                 {% set timeDiff = currentTime|date_modify("-1 hour") %}
-                                {% if lastTrainedTime > timeDiff %}
+                                {% if pokemon.lastTrained > timeDiff %}
                                     <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
                                         <input type="submit" value="Train" class="btn btn-primary disabled-button" disabled>
                                     </form>
@@ -130,10 +129,8 @@
                                 <input type="submit" value="Sortir avec" class="btn btn-primary">
                             </form>
                         {% else %}
-                            {% set currentTime = "now"|date("Y-m-d H:i:s") %}
-                            {% set lastTrainedTime = pokemon.lastTrained|date("Y-m-d H:i:s") %}
                             {% set timeDiff = currentTime|date_modify("-1 hour") %}
-                            {% if lastTrainedTime > timeDiff %}
+                            {% if pokemon.lastTrained > timeDiff %}
                                 <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
                                     <input type="submit" value="Sortir avec" class="btn btn-primary disabled-button" disabled>
                                 </form>
