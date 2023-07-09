@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\RefPokemonType;
+use App\Entity\Trainer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,6 +73,17 @@ class RefPokemonTypeRepository extends ServiceEntityRepository
     {
         $this->_em->remove($pokemon);
         $this->_em->flush();
+    }
+
+    public function findPokemonToBuy(Trainer $Trainer)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.trainer IS not NULL')
+            ->andWhere('p.sellPrice != 0')
+            ->andWhere('p.trainer != :trainer')
+            ->setParameter('trainer', $Trainer)
+            ->getQuery()
+            ->getResult();
     }
 
 }

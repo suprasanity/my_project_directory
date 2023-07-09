@@ -125,7 +125,11 @@ class TrainerController extends AbstractController
     public function train(Request $request): Response{
         $id=$request->get('id');
         $pokemon = $this->pokemonRepository->findById($id);
-        $pokemon->setLastTrained(new \DateTime());
+
+        //set last trained to now in europe/paris timezone
+        $timezone = new \DateTimeZone('Europe/Paris');
+        $pokemon->setLastTrained(new \DateTime('now', $timezone));
+
         //set realxp is random between 10 and 30
         $pokemon->setRealxp(rand(10,30) + $pokemon->getRealxp());
         if($pokemon->getXpCourbe()=="P"){

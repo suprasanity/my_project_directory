@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .disabled-button {
+            opacity: 0.5;
+            /* Add any other custom styles as needed */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ path('app_home') }}">Pokémon Universe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('myPokemon') }}">My Pokémon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>VOICI LES POKEMON A VENDRE</h1>
+        <h2>Vous avez {{ Trainer.pokedolls }}$</h2>
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Type 1</th>
+                <th scope="col">Type 2</th>
+                <th scope="col">Level</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Last time trained</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Acheter</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pokemon in pokemonToBuy %}
+            <tr>
+                <td>{{ pokemon.name }}</td>
+                <td>{{ pokemon.type1.name }}</td>
+                <td>
+                    {% if pokemon.type2 is null %}
+                        N/A
+                    {% else %}
+                        {{ pokemon.type2.name }}
+                    {% endif %}
+                </td>
+                <td>{{ pokemon.niveau }}</td>
+                <td>{{ pokemon.realxp }}</td>
+                <td>{{ pokemon.lastTrained|date('d-m-Y-H-i-s') }}</td>
+                <td class="pokemon-price">{{ pokemon.sellPrice }}</td>
+                <td>
+                    <form class="buy-form" action="/buy" method="POST">
+                        <input type="hidden" name="id" value="{{ pokemon.id }}">
+                        <button type="submit">Acheter</button>
+                    </form>
+                </td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="insufficientFundsModal" tabindex="-1" role="dialog" aria-labelledby="insufficientFundsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="insufficientFundsModalLabel">Fonds insuffisants</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Vous n'avez pas assez d'argent pour acheter ce Pokémon.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Attacher un gestionnaire d'événement pour empêcher l'envoi du formulaire si les fonds sont insuffisants
+        document.querySelectorAll('.buy-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const price = parseInt(this.querySelector('.pokemon-price').textContent);
+                const funds = parseInt('{{ Trainer.pokedolls }}');
+
+                if (funds < price) {
+                    event.preventDefault(); // Empêche l'envoi du formulaire
+
+                    // Afficher la modal
+                    $('#insufficientFundsModal').modal('show');
+                }
+            });
+        });
+    </script>
+{% endblock %}

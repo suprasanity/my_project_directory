@@ -49,4 +49,12 @@ sell:
   controller: App\Controller\TrainerController::sell
   methods: [POST]
 
+market:
+  path: /market
+  controller: App\Controller\HomeController::market
+
+buy:
+    path: /buy
+    controller: App\Controller\HomeController::buy
+    methods: [POST]
 

@@ -94,6 +94,29 @@ class Trainer implements \Symfony\Component\Security\Core\User\UserInterface
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="pokedolls", type="integer", nullable=true)
+     */
+    private $pokedolls;
+
+    /**
+     * @return int
+     */
+    public function getPokedolls(): int
+    {
+        return $this->pokedolls;
+    }
+
+    /**
+     * @param int $pokedolls
+     */
+    public function setPokedolls(int $pokedolls): void
+    {
+        $this->pokedolls = $pokedolls;
+    }
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)

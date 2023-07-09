@@ -52,10 +52,22 @@
                 <tr>
                     <td>{{ pokemon.name }}</td>
                     <td>{{ pokemon.type1.name }}</td>
-                    <td>{{ pokemon.type2.name }}</td>
+                    <td>
+                        {% if pokemon.type2 is null %}
+                            N/A
+                        {% else %}
+                            {{ pokemon.type2.name }}
+                        {% endif %}
+                    </td>
                     <td>{{ pokemon.niveau }}</td>
                     <td>{{ pokemon.realxp }}</td>
-                    <td>{{ pokemon.lastTrained|date('d-m-Y-H-i-s') }}</td>
+                    <td>
+                        {% if pokemon.lastTrained is null %}
+                            N/A
+                        {% else %}
+                            {{ pokemon.lastTrained|date("Y-m-d H:i:s") }}
+                        {% endif %}
+                    </td>
                     <td>
                         {% if pokemon.sellPrice != 0 %}
                             <input type="checkbox" checked disabled>
@@ -64,14 +76,23 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% set lastTrainedTime = pokemon.lastTrained.format('U')|trim %}
-                        {% set oneHourAgo = "now"|date('U')|trim - 3600 %}
-                        {% if lastTrainedTime > oneHourAgo %}
-                            <button class="btn btn-primary disabled" disabled>Train</button>
-                        {% else %}
+                        {% if pokemon.lastTrained is null %}
                             <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
                                 <input type="submit" value="Train" class="btn btn-primary">
                             </form>
+                        {% else %}
+                              {% set currentTime = "now"|date("Y-m-d H:i:s") %}
+                                {% set lastTrainedTime = pokemon.lastTrained|date("Y-m-d H:i:s") %}
+                                {% set timeDiff = currentTime|date_modify("-1 hour") %}
+                                {% if lastTrainedTime > timeDiff %}
+                                    <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                        <input type="submit" value="Train" class="btn btn-primary disabled-button" disabled>
+                                    </form>
+                                {% else %}
+                                    <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                        <input type="submit" value="Train" class="btn btn-primary">
+                                    </form>
+                                {% endif %}
                         {% endif %}
                     </td>
                     <td>
@@ -104,12 +125,23 @@
                         </div>
                     </td>
                     <td>
-                        {% if lastTrainedTime > oneHourAgo %}
-                            <button class="btn btn-primary disabled" disabled>Sortir avec</button>
-                        {% else %}
+                        {% if pokemon.lastTrained is null %}
                             <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
                                 <input type="submit" value="Sortir avec" class="btn btn-primary">
                             </form>
+                        {% else %}
+                            {% set currentTime = "now"|date("Y-m-d H:i:s") %}
+                            {% set lastTrainedTime = pokemon.lastTrained|date("Y-m-d H:i:s") %}
+                            {% set timeDiff = currentTime|date_modify("-1 hour") %}
+                            {% if lastTrainedTime > timeDiff %}
+                                <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                    <input type="submit" value="Sortir avec" class="btn btn-primary disabled-button" disabled>
+                                </form>
+                            {% else %}
+                                <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                    <input type="submit" value="Sortir avec" class="btn btn-primary">
+                                </form>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

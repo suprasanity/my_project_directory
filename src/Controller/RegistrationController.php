@@ -28,6 +28,7 @@ class RegistrationController extends AbstractController
             $password = $passwordEncoder->encodePassword($trainer, $trainer->getPassword());
             $trainer->setPassword($password);
             $trainer->setFirstLogged(true);
+            $trainer->setPokedolls(100);
 
             // Save the trainer to the database
             $entityManager = $this->getDoctrine()->getManager();

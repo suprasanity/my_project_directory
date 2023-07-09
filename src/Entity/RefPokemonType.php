@@ -24,6 +24,8 @@ class RefPokemonType
         $this->type2 = $pokemonType->getType2();
         $this->starter = $pokemonType->isStarter();
         $this->xpCourbe = $pokemonType->getXpCourbe();
+        $this->realxp=$pokemonType->getRealxp();
+        $this->niveau=$pokemonType->getNiveau();
     }
 
 
@@ -43,6 +45,12 @@ class RefPokemonType
     {
         return $this->starter;
     }
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="niveau", type="integer", nullable=true)
+     */
+    private int $niveau;
 
     /**
      * @param bool $starter
@@ -159,6 +167,16 @@ class RefPokemonType
         $this->realxp = $realxp;
     }
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="realxp", type="integer", nullable=true)
+     */
+    private int $realxp;
+
+
+
     /**
      * @return int
      */
@@ -174,22 +192,6 @@ class RefPokemonType
     {
         $this->niveau = $niveau;
     }
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="realxp", type="integer", nullable=false)
-     */
-    private int $realxp;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="niveau", type="integer", nullable=false)
-     */
-    private int $niveau;
-
-
     public function getId(): int
     {
         return $this->id;
