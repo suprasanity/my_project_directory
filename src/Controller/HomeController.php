@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Repository\RefPokemonTypeRepository;
 use App\Repository\TrainerTypeRepository;
 use http\Env\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class HomeController extends AbstractController
 
@@ -22,6 +24,7 @@ class HomeController extends AbstractController
     }
     /**
      * @Route("/home", name="app_home")
+     * @IsGranted("ROLE_USER")
      */
     public function index(): Response
     {
@@ -43,6 +46,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/market", name="market")
+     * @IsGranted("ROLE_USER")
      */
 
     public function market(): Response
@@ -58,6 +62,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/buy", name="buy", methods={"POST"})
+     * @IsGranted("ROLE_USER")
      */
 
     public function buy(\Symfony\Component\HttpFoundation\Request $request): Response

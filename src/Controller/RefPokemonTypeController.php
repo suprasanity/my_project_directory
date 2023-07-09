@@ -8,6 +8,7 @@ use App\Form\RefPokemonTypeType;
 use App\Repository\RefPokemonTypeRepository;
 use App\Repository\TrainerTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/ref/pokemon/type")
+ * @IsGranted("ROLE_USER")
  */
 class RefPokemonTypeController extends AbstractController
 {
@@ -29,6 +31,7 @@ class RefPokemonTypeController extends AbstractController
     }
     /**
      * @Route("/", name="app_ref_pokemon_type_index", methods={"GET"})
+     * @IsGranted("ROLE_USER")
      */
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -43,6 +46,7 @@ class RefPokemonTypeController extends AbstractController
 
     /**
      * @Route("/new", name="app_ref_pokemon_type_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -65,6 +69,7 @@ class RefPokemonTypeController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_ref_pokemon_type_show", methods={"GET"})
+     * @IsGranted("ROLE_USER")
      */
     public function show(RefPokemonType $refPokemonType): Response
     {
@@ -75,6 +80,7 @@ class RefPokemonTypeController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_ref_pokemon_type_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function edit(Request $request, RefPokemonType $refPokemonType, EntityManagerInterface $entityManager): Response
     {
@@ -95,6 +101,8 @@ class RefPokemonTypeController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_ref_pokemon_type_delete", methods={"POST"})
+     *
+     * @IsGranted("ROLE_USER")
      */
     public function delete(Request $request, RefPokemonType $refPokemonType, EntityManagerInterface $entityManager): Response
     {
@@ -107,6 +115,7 @@ class RefPokemonTypeController extends AbstractController
     }
     /**
      * @Route("/registration/first_login", name="first_login")
+     * @IsGranted("ROLE_USER")
      */
     public function success(Request $request,EntityManagerInterface $entityManager): Response
     {
@@ -124,6 +133,7 @@ class RefPokemonTypeController extends AbstractController
 
     /**
      * @Route("/toto/{pokemon.id}", name="toto", methods={"POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function addPokemon(Request $request): Response
 

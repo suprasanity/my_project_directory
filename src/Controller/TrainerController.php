@@ -7,6 +7,7 @@ use App\Form\TrainerType;
 use App\Repository\RefPokemonTypeRepository;
 use App\Repository\TrainerTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -121,6 +122,7 @@ class TrainerController extends AbstractController
 
     /**
      * @Route("/train/{id}", name="train", methods={"POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function train(Request $request): Response{
         $id=$request->get('id');
