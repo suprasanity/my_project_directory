@@ -58,3 +58,12 @@ buy:
     controller: App\Controller\HomeController::buy
     methods: [POST]
 
+sortir:
+    path: /sortir
+    controller: App\Controller\HomeController::sortir
+
+capture:
+    path: /capture
+    controller: App\Controller\HomeController::capture
+    methods: [POST]
+

@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* Custom styles */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-text {
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Pokémon Universe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('myPokemon') }}">My Pokémon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('market') }}">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Ville</h5>
+                        <p class="card-text">Des pokémon parfaitement social UwU</p>
+                        <form action="{{ path('capture') }}" method="post">
+                            <input type="hidden" name="card_title" value="Ville">
+                            <button type="submit" class="btn btn-primary">Select</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Plage</h5>
+                        <p class="card-text">Les Tentacruell sont venimeux</p>
+                        <form action="{{ path('capture') }}" method="post">
+                            <input type="hidden" name="card_title" value="Plage">
+                            <button type="submit" class="btn btn-primary">Select</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Montagne</h5>
+                        <p class="card-text">Faite attentions au racailloux!!.</p>
+                        <form action="{{ path('capture') }}" method="post">
+                            <input type="hidden" name="card_title" value="Montagne">
+                            <button type="submit" class="btn btn-primary">Select</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Foret</h5>
+                        <p class="card-text">Faites attention ou vous mettez les pied LES insectes rodent</p>
+                        <form action="{{ path('capture') }}" method="post">
+                            <input type="hidden" name="card_title" value="Foret">
+                            <button type="submit" class="btn btn-primary">Select</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Prairie</h5>
+                        <p class="card-text">Quel havre de paix</p>
+                        <form action="{{ path('capture') }}" method="post">
+                            <input type="hidden" name="card_title" value="Prairie">
+                            <button type="submit" class="btn btn-primary">Select</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

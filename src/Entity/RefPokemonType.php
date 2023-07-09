@@ -26,6 +26,7 @@ class RefPokemonType
         $this->xpCourbe = $pokemonType->getXpCourbe();
         $this->realxp=$pokemonType->getRealxp();
         $this->niveau=$pokemonType->getNiveau();
+        $this->sellPrice=$pokemonType->getSellPrice();
     }
 
 

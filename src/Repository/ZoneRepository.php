@@ -63,4 +63,21 @@ class ZoneRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findTypeZone(string $string): array
+    {
+        $types = $this->createQueryBuilder('z')
+            ->select('t.id')
+            ->join('z.type', 't')
+            ->where('z.' . $string . ' = :stringValue')
+            ->setParameter('stringValue', true)
+            ->getQuery()
+            ->getResult();
+
+        // Extract the type names from the result
+
+        return $types;
+    }
+
+
+
 }

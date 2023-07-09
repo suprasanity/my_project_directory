@@ -125,17 +125,17 @@
                     </td>
                     <td>
                         {% if pokemon.lastTrained is null %}
-                            <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                            <form method="POST" action="{{ path('sortir', {'id': pokemon.id}) }}">
                                 <input type="submit" value="Sortir avec" class="btn btn-primary">
                             </form>
                         {% else %}
                             {% set timeDiff = currentTime|date_modify("-1 hour") %}
                             {% if pokemon.lastTrained > timeDiff %}
-                                <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                <form method="POST" action="{{ path('sortir', {'id': pokemon.id}) }}">
                                     <input type="submit" value="Sortir avec" class="btn btn-primary disabled-button" disabled>
                                 </form>
                             {% else %}
-                                <form method="POST" action="{{ path('train', {'id': pokemon.id}) }}">
+                                <form method="POST" action="{{ path('sortir', {'id': pokemon.id}) }}">
                                     <input type="submit" value="Sortir avec" class="btn btn-primary">
                                 </form>
                             {% endif %}

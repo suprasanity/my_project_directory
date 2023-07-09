@@ -86,4 +86,19 @@ class RefPokemonTypeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findPokemonByType(array $typeIds): array
+    {
+        $queryBuilder = $this->createQueryBuilder('pokemon')
+            ->select('pokemon.id')
+            ->Where('pokemon.trainer IS NULL')
+            ->andWhere('pokemon.type1 IN (:typeIds) OR pokemon.type2 IN (:typeIds)')
+            ->setParameter('typeIds', $typeIds)
+            ->groupBy('pokemon.id');
+
+        $results = $queryBuilder->getQuery()->getScalarResult();
+
+        return array_column($results, 'id');
+    }
+
+
 }

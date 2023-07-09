@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\RefPokemonTypeRepository;
 use App\Repository\TrainerTypeRepository;
+use App\Repository\ZoneRepository;
 use http\Env\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +18,13 @@ class HomeController extends AbstractController
     private RefPokemonTypeRepository $pokemonRepository;
     private TrainerTypeRepository $trainerRepository;
 
-    public function __construct(RefPokemonTypeRepository $pokemonRepository, TrainerTypeRepository $trainerRepository)
+    private ZoneRepository $zoneRepository;
+
+    public function __construct(RefPokemonTypeRepository $pokemonRepository, TrainerTypeRepository $trainerRepository, ZoneRepository $zoneRepository)
     {
         $this->pokemonRepository = $pokemonRepository;
         $this->trainerRepository = $trainerRepository;
+        $this->zoneRepository = $zoneRepository;
     }
     /**
      * @Route("/home", name="app_home")
@@ -78,5 +82,41 @@ class HomeController extends AbstractController
         $this->pokemonRepository->persist($Pokemon);
         return $this->redirectToRoute('market');
     }
+
+    /**
+     * @Route("/sortir", name="sortir")
+     * @IsGranted("ROLE_USER")
+     */
+    public function sortir(): Response{
+        return $this ->render('home/sortir.html.twig');
+    }
+
+    /**
+     * @Route("/capture", name="capture")
+     * @IsGranted("ROLE_USER")
+     */
+
+    public function capture(\Symfony\Component\HttpFoundation\Request $request): Response{
+        $zone =$request->get('card_title');
+        $type=   $this->zoneRepository->findTypeZone($zone);
+
+        //get the pokemon that has a type in $type
+        $pokemon = $this->pokemonRepository->findPokemonByType($type);
+        //pick random pokemon in the array
+        $pokemon = $pokemon[rand(0, count($pokemon) - 1)];
+
+        $pokemonReal = $this->pokemonRepository->findById($pokemon);
+        $pokemonClone = new \App\Entity\RefPokemonType($pokemonReal);
+        $Trainer = $this->trainerRepository->findById($this->getUser()->getId());
+        $pokemonClone->setTrainer($Trainer);
+        $this->pokemonRepository->persist($pokemonClone);
+
+
+
+        return $this ->render('home/capture.html.twig', [
+            'pokemon' => $pokemonClone,
+        ]);
+    }
+
 
 }
