@@ -1,6 +1,7 @@
 index:
     path: /
     controller: App\Controller\HomeController::index
+
 trainer_registration:
   path: /register
   controller: App\Controller\RegistrationController::register
@@ -13,6 +14,10 @@ login:
     path: /login
     controller: App\Controller\LoginController::login
 
+logout:
+    path: /logout
+    controller: App\Controller\LoginController::logout
+
 Home:
     path: /home
     controller: App\Controller\HomeController::index
@@ -20,3 +25,11 @@ Home:
 first_sucess:
   path: /registration/first_login
   controller: App\Controller\RefPokemonType::success
+
+add_pokemon:
+  path: /toto
+  controller: App\Controller\RefPokemonType::addPokemon
+
+myPokemon:
+  path: /myPokemon
+  controller: App\Controller\TrainerController::myPokemon

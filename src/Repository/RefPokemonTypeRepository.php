@@ -18,4 +18,53 @@ class RefPokemonTypeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RefPokemonType::class);
     }
+
+    //find all pokemon where starter is true
+    public function findAllStarters()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.starter = true')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    //
+
+    public function findAllPokemonFromUser(string $userId)
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.trainer', 't')
+            ->where('t.id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function persist(?RefPokemonType $pokemon)
+    {
+        if ($pokemon) {
+            $this->_em->persist($pokemon);
+            $this->_em->flush();
+        }
+    }
+    /**
+     * Find a Pokemon by ID.
+     *
+     * @param int $id
+     * @return RefPokemonType
+     */
+    public function findById(int $id): RefPokemonType
+    {
+        return $this->find($id);
+    }
+
+    public function findByTrainer(\App\Entity\Trainer $Trainer)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.trainer = :trainer')
+            ->setParameter('trainer', $Trainer)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

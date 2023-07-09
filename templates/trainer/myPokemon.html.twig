@@ -1,14 +1,9 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Home{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% endblock %}
-
 {% block body %}
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Pokémon Universe</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -26,12 +21,12 @@
             </ul>
         </div>
     </nav>
-    <div class="container">
-        <h1 class="mt-5">Welcome to the Pokémon Universe!</h1>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <h1>VOICI VOS POKEMON</h1>
+    <ul class="list-group">
+        {% for pokemon in trainersPokemon %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <strong>{{ pokemon.name }}</strong>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\RefPokemonType;
 use App\Form\PokemonType;
 use App\Form\RefPokemonTypeType;
+use App\Repository\RefPokemonTypeRepository;
+use App\Repository\TrainerTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RefPokemonTypeController extends AbstractController
 {
+    private RefPokemonTypeRepository $pokemonRepository;
+
+    private TrainerTypeRepository $trainerRepository;
+    public function __construct(RefPokemonTypeRepository $pokemonRepository, TrainerTypeRepository $trainerRepository)
+    {
+        $this->pokemonRepository = $pokemonRepository;
+        $this->trainerRepository = $trainerRepository;
+    }
     /**
      * @Route("/", name="app_ref_pokemon_type_index", methods={"GET"})
      */
@@ -101,12 +112,39 @@ class RefPokemonTypeController extends AbstractController
     {
         $form = $this->createForm(PokemonType::class);
 
-        // Handle the form submission
-        $form->handleRequest($request);
+        // Handle form submission, validation, etc.
 
+        $pokemons = $this->pokemonRepository->findAllStarters();
 
         return $this->render('ref_pokemon_type/chooseStarter.html.twig', [
             'form' => $form->createView(),
+            'pokemons' => $pokemons,
         ]);
+    }
+
+    /**
+     * @Route("/toto/{pokemon.id}", name="toto", methods={"POST"})
+     */
+    public function addPokemon(Request $request): Response
+
+    {
+        $user = $this->getUser();
+        $Trainer = $this->trainerRepository->findById($user->getId());
+        $Trainer->setFirstLogged(false);
+        $this->trainerRepository->persist($Trainer);
+
+        $pokemonId = $request->request->get('pokemon_id');
+
+        $pokemon = $this->pokemonRepository->findById($pokemonId);
+        $pokemon->setTrainer($Trainer);
+        $this->pokemonRepository->persist($pokemon);
+
+
+
+
+
+
+
+        return $this->redirectToRoute('app_home');
     }
 }

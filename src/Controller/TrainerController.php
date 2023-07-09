@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Trainer;
 use App\Form\TrainerType;
+use App\Repository\RefPokemonTypeRepository;
+use App\Repository\TrainerTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TrainerController extends AbstractController
 {
+    private TrainerTypeRepository $trainerRepository;
+
+    private RefPokemonTypeRepository $pokemonRepository;
+
+    public function __construct(RefPokemonTypeRepository $pokemonRepository, TrainerTypeRepository $trainerRepository)
+    {
+        $this->pokemonRepository = $pokemonRepository;
+        $this->trainerRepository = $trainerRepository;
+    }
     /**
      * @Route("/", name="app_trainer_index", methods={"GET"})
      */
@@ -93,4 +104,20 @@ class TrainerController extends AbstractController
 
         return $this->redirectToRoute('app_trainer_index', [], Response::HTTP_SEE_OTHER);
     }
+    /**
+     * @Route("/myPokemon", name="myPokemon", methods={"GET"})
+     */
+    public function myPokemon(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $Trainer = $this->trainerRepository->findById($user->getId());
+
+
+
+        return $this->render('trainer/myPokemon.html.twig', [
+            'trainersPokemon' => $this->pokemonRepository->findByTrainer($Trainer),
+        ]);
+    }
+
+
 }

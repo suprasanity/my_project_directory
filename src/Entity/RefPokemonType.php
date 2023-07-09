@@ -13,6 +13,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RefPokemonType
 {
+
+    //constuctor
+
+
+    public function __construct(RefPokemonType $pokemonType)
+    {
+        $this->name = $pokemonType->getName();
+        $this->type1 = $pokemonType->getType1();
+        $this->type2 = $pokemonType->getType2();
+        $this->starter = $pokemonType->isStarter();
+        $this->xpCourbe = $pokemonType->getXpCourbe();
+    }
+
+
     /**
      * @var int
      *
@@ -21,6 +35,52 @@ class RefPokemonType
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private int $id;
+
+    /**
+     * @return bool
+     */
+    public function isStarter(): bool
+    {
+        return $this->starter;
+    }
+
+    /**
+     * @param bool $starter
+     */
+    public function setStarter(bool $starter): void
+    {
+        $this->starter = $starter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getXpCourbe(): string
+    {
+        return $this->xpCourbe;
+    }
+
+    /**
+     * @param string $xpCourbe
+     */
+    public function setXpCourbe(string $xpCourbe): void
+    {
+        $this->xpCourbe = $xpCourbe;
+    }
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="starter", type="boolean", length=255, nullable=false)
+     */
+    private bool $starter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="xp", type="string", length=255, nullable=false)
+     */
+    private string $xpCourbe;
 
     /**
      * @var string
@@ -59,6 +119,30 @@ class RefPokemonType
      * @ORM\JoinColumn(name="trainer_id", referencedColumnName="id")
      */
     private ?Trainer $trainer;
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", nullable=false)
+     */
+    private string $image;
 
     public function getId(): int
     {
@@ -113,5 +197,10 @@ class RefPokemonType
     public function setTrainer(?Trainer $trainer): void
     {
         $this->trainer = $trainer;
+    }
+
+    public function setId(int $int)
+    {
+        $this->id = $int;
     }
 }

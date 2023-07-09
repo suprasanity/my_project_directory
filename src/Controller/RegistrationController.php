@@ -27,6 +27,7 @@ class RegistrationController extends AbstractController
             // Encode the plain password before saving to the database
             $password = $passwordEncoder->encodePassword($trainer, $trainer->getPassword());
             $trainer->setPassword($password);
+            $trainer->setFirstLogged(true);
 
             // Save the trainer to the database
             $entityManager = $this->getDoctrine()->getManager();
